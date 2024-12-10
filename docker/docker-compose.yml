@@ -1,0 +1,19 @@
+services:
+
+  batallas:
+    image: mysql:latest
+    container_name: mysql_batallas_2024
+    ports:
+      - "3306:3306"
+      #- "6603:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=1234
+      #MYSQL_DATABASE: app_db
+      #MYSQL_USER: db_user
+      #MYSQL_PASSWORD: db_user_pass
+    volumes:
+      - "./config/my.conf:/etc/mysql/conf.d/config-file.cnf"
+      - "./bd:/var/lib/mysql:rw"
+      - type: bind # Host and Docker machines have identical views to the same directory; changes propagate both ways
+        source: ./src # Host machine directory to mount
+        target: /app # Docker machine directory to be mapped to
