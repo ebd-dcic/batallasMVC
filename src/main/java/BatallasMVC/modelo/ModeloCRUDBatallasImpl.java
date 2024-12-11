@@ -62,10 +62,10 @@ public class ModeloCRUDBatallasImpl extends ModeloImpl implements ModeloCRUDBata
 	
 	  // Utilizando la conexiï¿½n ya establecida con la base de datos recupera todas las tuplas 
 	  // de la tabla batallas y las devuelve como una lista de objetos BatallaBean  
-	  public ArrayList<BatallaBean> recuperarTablaBatallas() throws Exception{			
+	  public ArrayList<BatallaBean> recuperarTablaBatallas() throws Exception{
 	   try{
 		    ArrayList<BatallaBean> lista = new ArrayList<BatallaBean>() ;
-			ResultSet rs = this.consulta("SELECT nombre_batalla, fecha FROM batallas");			
+			ResultSet rs = this.consulta("SELECT nombre_batalla, fecha FROM batallas");
 			while (rs.next()) {
 				BatallaBean batalla= new BatallaBeanImpl(); 	
 				batalla.setNombre(rs.getString("nombre_batalla"));
@@ -78,7 +78,7 @@ public class ModeloCRUDBatallasImpl extends ModeloImpl implements ModeloCRUDBata
 		   logger.error("SQLException: " + ex.getMessage());
 		   logger.error("SQLState: " + ex.getSQLState());
 		   logger.error("VendorError: " + ex.getErrorCode());		   
-		   throw new Exception("Error en la conexiï¿½n con la BD.");
+		   throw new Exception("Error en la conexión con la BD.");
 	   }
 	}
 	
