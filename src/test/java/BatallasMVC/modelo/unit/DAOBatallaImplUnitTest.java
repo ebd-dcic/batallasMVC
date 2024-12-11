@@ -294,4 +294,100 @@ public class DAOBatallaImplUnitTest {
         // Verifica que solo se envie un parametro
         assertEquals(1, params.size());
     }
+
+    @Test
+    void testRecuperarBatallas_SinResultados() throws Exception {
+        // Simula una consulta que no retorna batallas
+        when(mockConnection.prepareStatement(anyString())).thenReturn(mockPreparedStatement);
+        when(mockPreparedStatement.executeQuery()).thenReturn(mockResultSet);
+        when(mockResultSet.next()).thenReturn(false);
+
+        BatallaBean batalla = new BatallaBeanImpl();
+
+        List<BatallaBean> batallas = daoBatalla.recuperarBatallas(batalla);
+
+        // Verifica que no se haya recuperado ninguna batalla
+        assertEquals(0, batallas.size());
+
+        verify(mockPreparedStatement, times(1)).executeQuery();
+    }
+
+    @Test
+    void testRecuperarBatallasSQLException() throws Exception {
+        when(mockConnection.prepareStatement(anyString())).thenReturn(mockPreparedStatement);
+        when(mockPreparedStatement.executeQuery()).thenThrow(new SQLException("Unexpected Error", "SQLState", 9999));
+
+        // Batalla a buscar
+        BatallaBean batalla = new BatallaBeanImpl();
+
+        Exception exception = assertThrows(Exception.class, () -> {
+            daoBatalla.recuperarBatallas(batalla);
+        });
+
+        assertEquals("Error al recuperar las batallas", exception.getMessage());
+    }
+
+    @Test
+    void testActualizarBatalla() throws Exception {
+        when(mockConnection.prepareStatement(anyString())).thenReturn(mockPreparedStatement);
+        when(mockPreparedStatement.executeUpdate()).thenReturn(1); // retorna la cantidad de filas afectadas
+
+        // Batalla a seleccionar
+        BatallaBean batallaSeleccionada = new BatallaBeanImpl();
+        batallaSeleccionada.setNombre("Batalla de Waterloo");
+
+        // Batalla a modificar
+        BatallaBean batallaModificada = new BatallaBeanImpl();
+        batallaModificada.setNombre("Batalla de Watergate");
+        batallaModificada.setFecha(Date.valueOf("1972-06-17"));
+
+        daoBatalla.actualizarBatalla(batallaSeleccionada, batallaModificada);
+
+        verify(mockPreparedStatement, times(1)).setString(1, "Batalla de Watergate");
+        verify(mockPreparedStatement, times(1)).setDate(2, Date.valueOf("1972-06-17"));
+        verify(mockPreparedStatement, times(1)).setString(3, "Batalla de Waterloo");
+        verify(mockPreparedStatement, times(1)).executeUpdate();
+    }
+
+    @Test
+    void testActualizarBatallaException() throws Exception {
+        when(mockConnection.prepareStatement(anyString())).thenReturn(mockPreparedStatement);
+        when(mockPreparedStatement.executeUpdate()).thenThrow(new SQLException("Cannot delete or update a parent row: a foreign key constraint fails", "SQLState", 1451));
+
+        // Batalla a seleccionar
+        BatallaBean batallaSeleccionada = new BatallaBeanImpl();
+        batallaSeleccionada.setNombre("Batalla de Waterloo");
+
+        // Batalla a modificar
+        BatallaBean batallaModificada = new BatallaBeanImpl();
+        batallaModificada.setNombre("Batalla de Watergate");
+        batallaModificada.setFecha(Date.valueOf("1972-06-17"));
+
+        Exception exception = assertThrows(Exception.class, () -> {
+            daoBatalla.actualizarBatalla(batallaSeleccionada, batallaModificada);
+        });
+
+        assertEquals("No se puede actualizar la batalla por que esta referenciada en otra tabla", exception.getMessage());
+    }
+
+    @Test
+    void testActualizarBatallaSQLException() throws Exception {
+        when(mockConnection.prepareStatement(anyString())).thenReturn(mockPreparedStatement);
+        when(mockPreparedStatement.executeUpdate()).thenThrow(new SQLException("Unexpected Error", "SQLState", 9999));
+
+        // Batalla a seleccionar
+        BatallaBean batallaSeleccionada = new BatallaBeanImpl();
+        batallaSeleccionada.setNombre("Batalla de Waterloo");
+
+        // Batalla a modificar
+        BatallaBean batallaModificada = new BatallaBeanImpl();
+        batallaModificada.setNombre("Batalla de Watergate");
+        batallaModificada.setFecha(Date.valueOf("1972-06-17"));
+
+        Exception exception = assertThrows(Exception.class, () -> {
+            daoBatalla.actualizarBatalla(batallaSeleccionada, batallaModificada);
+        });
+
+        assertEquals("Error inesperado al borrar la batalla en la B.D.", exception.getMessage());
+    }
 }
