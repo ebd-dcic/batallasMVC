@@ -14,7 +14,7 @@ import utils.Fechas;
 
 public class DAOBatallaImpl implements DAOBatalla{
 	
-private static Logger logger = LoggerFactory.getLogger(DAOBatallaImpl.class);
+	private static Logger logger = LoggerFactory.getLogger(DAOBatallaImpl.class);
 	
 	private Connection conexion;
 	
@@ -36,15 +36,16 @@ private static Logger logger = LoggerFactory.getLogger(DAOBatallaImpl.class);
 	public void insertarBatalla(BatallaBean batalla) throws Exception
 	{
 		// crea el string para la sentencia preparada
-		String sql= "INSERT INTO batallas(nombre_batalla, fecha) values (?,?)";
+		String sql = "INSERT INTO batallas(nombre_batalla, fecha) values (?,?)";
 
 		logger.debug("SQL: INSERT INTO batallas(nombre_batalla, fecha) values ({},{})", batalla.getNombre(), Fechas.convertirDateADateSQL(batalla.getFecha()));
 		
-		try 
-		{  PreparedStatement insert = conexion.prepareStatement(sql); 
-		   insert.setString(1, batalla.getNombre());
-		   insert.setDate(2, Fechas.convertirDateADateSQL(batalla.getFecha()));
-		   insert.executeUpdate();
+		try
+		{
+			PreparedStatement insert = conexion.prepareStatement(sql); 
+			insert.setString(1, batalla.getNombre());
+			insert.setDate(2, Fechas.convertirDateADateSQL(batalla.getFecha()));
+			insert.executeUpdate();
 		}
 		catch (SQLException ex)
 		{
@@ -114,22 +115,29 @@ private static Logger logger = LoggerFactory.getLogger(DAOBatallaImpl.class);
 			int paramIndex = 1; // Se usa una variable porque no se conoce de antemano cuantos parametros se van a agregar
 			if ((batalla.getNombre() != null) && !batalla.getNombre().isEmpty()) {
 				String patron = "%" + batalla.getNombre() + "%";
-				logger.debug("patron: {}", patron);
+				logger.debug("Parámetro {}: {}", paramIndex, patron);
 				select.setString(paramIndex++, patron);
 			}
 	
 			if (batalla.getFecha() != null) {
-				select.setString(paramIndex++, Fechas.convertirDateAStringDB(batalla.getFecha()));
+				String patron = Fechas.convertirDateAStringDB(batalla.getFecha());
+				logger.debug("Parámetro {}: {}", paramIndex, patron);
+				select.setString(paramIndex++, patron);
 			}
 	
 			 ResultSet rs= select.executeQuery();
 			
 			 while (rs.next()) {
-				logger.debug("Se recuperó el item con nombre {} y fecha {}", rs.getString("nombre_batalla"), rs.getDate("fecha"));
+				// Ojo con usar directamente getString, getDate, etc. porque en los casos de test unitarios puede tener problemas si se llama varias veces a la misma columna
+				// Se recomienda asignar a una variable y luego usarla
+				String nombre = rs.getString("nombre_batalla");
+				java.sql.Date fecha = rs.getDate("fecha");
+
+				logger.debug("Se recuperó el item con nombre {} y fecha {}", nombre, fecha);
 
 				BatallaBean b = new BatallaBeanImpl();
-				b.setNombre(rs.getString("nombre_batalla"));
-				b.setFecha(rs.getDate("fecha"));
+				b.setNombre(nombre);
+				b.setFecha(fecha);
 
 				lista.add(b);
 			}
