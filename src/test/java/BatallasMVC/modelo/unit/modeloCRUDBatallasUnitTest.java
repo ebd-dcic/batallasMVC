@@ -6,6 +6,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
+import org.objenesis.Objenesis;
+import org.objenesis.ObjenesisStd;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,14 +15,12 @@ import java.sql.*;
 import java.util.List;
 
 import BatallasMVC.modelo.BatallaBean;
-import BatallasMVC.modelo.BatallaBeanImpl;
-import BatallasMVC.modelo.ModeloCRUDBatallasImpl;
 import BatallasMVC.modelo.ModeloCRUDBatallas;
+import BatallasMVC.modelo.ModeloCRUDBatallasImpl;
 
+public class modeloCRUDBatallasUnitTest {
 
-public class ModeloCRUDBatallasImplUnitTest {
-
-    private static Logger logger = LoggerFactory.getLogger(ModeloCRUDBatallasImplUnitTest.class);
+    private static Logger logger = LoggerFactory.getLogger(modeloCRUDBatallasUnitTest.class);
 
     @Mock
     private Connection mockConnection;
@@ -35,7 +35,9 @@ public class ModeloCRUDBatallasImplUnitTest {
     private ResultSet mockResultSet;
 
     @Spy
-    private ModeloCRUDBatallas spyModeloCRUDBatallasImpl;  // Se usa spy para poder evitar llamar a this.consulta() en el método recuperarTablaBatallas()
+    private ModeloCRUDBatallas spyModeloCRUDBatallas;
+
+    private ModeloCRUDBatallas modeloCRUDBatallas;  
 
     @BeforeEach
     public void setUp() throws Exception {
@@ -46,12 +48,9 @@ public class ModeloCRUDBatallasImplUnitTest {
         mockPreparedStatement = mock(PreparedStatement.class);
         mockResultSet = mock(ResultSet.class);
 
-        // crea una instancia de ModeloCRUDBatallasImpl sin utilizar el constructor
-        spyModeloCRUDBatallasImpl = Mockito.spy(ModeloCRUDBatallasImpl.class);
-        // se evita a this.conectar() en el constructor
-        doReturn(true).when(spyModeloCRUDBatallasImpl).conectar(anyString(), anyString());
-
-        spyModeloCRUDBatallasImpl.setConexion(mockConnection);
+        // crea una instancia de modeloCRUDBatallasImpl sin utilizar el constructor
+        Objenesis objenesis = new ObjenesisStd();
+        modeloCRUDBatallas = objenesis.newInstance(ModeloCRUDBatallasImpl.class);
     }
 
     @Test
@@ -59,6 +58,7 @@ public class ModeloCRUDBatallasImplUnitTest {
         // Supone que va a utilizar this.consulta en lugar de utilizar la conexion manual
         // Se usa spy para evitar llamar a this.consulta() en el método recuperarTablaBatallas()
         //
+        spyModeloCRUDBatallas = Mockito.spy(modeloCRUDBatallas);
 
         // al llamar a consulta retorna un resultset de 3 batallas
         when(mockResultSet.next())
@@ -75,9 +75,9 @@ public class ModeloCRUDBatallasImplUnitTest {
             .thenReturn(Date.valueOf("2021-02-02"))
             .thenReturn(Date.valueOf("2021-03-03"));
 
-        doReturn(mockResultSet).when(spyModeloCRUDBatallasImpl).consulta(anyString());
+        doReturn(mockResultSet).when(spyModeloCRUDBatallas).consulta(anyString());
 
-        List<BatallaBean> batallas = spyModeloCRUDBatallasImpl.recuperarTablaBatallas();
+        List<BatallaBean> batallas = spyModeloCRUDBatallas.recuperarTablaBatallas();
 
         assertEquals(3, batallas.size());
 

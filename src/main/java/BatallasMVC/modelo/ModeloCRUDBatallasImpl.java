@@ -12,7 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-
 public class ModeloCRUDBatallasImpl extends ModeloImpl implements ModeloCRUDBatallas {
 
 	private static Logger logger = LoggerFactory.getLogger(ModeloCRUDBatallasImpl.class);
@@ -21,6 +20,9 @@ public class ModeloCRUDBatallasImpl extends ModeloImpl implements ModeloCRUDBata
 		// inicializa la conexión con el servidor utilizando el método estático de la clase Conexion
 		// que setea el driver (jdbc), la ubicación del servidor y puerto (url) y la bases de datos, 
 		// recuperando estos datos de un archivo de propiedades  
+
+		// Obsevación: Convendría refactorizar el código del constructor para que reciba las dependencias como parámetros
+		// y así poder inyectar las dependencias en los tests unitarios. Por esta razón, fue necesario utilizar objenesis para testear sin llamar al constructor.
 		try
 		{
 			Conexion.inicializar("cfg/conexionBD.properties");	
