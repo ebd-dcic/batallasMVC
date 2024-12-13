@@ -57,7 +57,7 @@ public class ModeloCRUDBatallasImpl extends ModeloImpl implements ModeloCRUDBata
 		}
 		catch(Exception ex)
 		{
-			logger.error("Se produjo un error al recuperar el archivo de propiedades con los datos del usuario y no se puedo establecer la conexión");
+			logger.error("Se produjo un error al recuperar el archivo de propiedades con los datos del usuario y no se pudo establecer la conexión");
 			throw new Exception("No se pudo conectar al servidor. Error al recuperar el usuario y password del archivo de configuración de usuarios");
 		}
 	}
