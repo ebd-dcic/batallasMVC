@@ -5,19 +5,31 @@ Ejemplo de un proyecto CRUD sobre batallas en Guerras Mundiales. Este ejemplo mu
 ## Estructura del proyecto
 
 El proyecto está estructurado de la siguiente manera:
-    - src/main/java: Carpeta que contiene el código fuente del proyecto.
-    - src/main/resources: Carpeta que contiene los archivos de configuración de casos de test y logger.
-    - src/test/java: Carpeta que contiene los casos de test.
-    - target: Carpeta que contiene los archivos generados por maven.
-    - cfg: Carpeta que contiene los archivos de configuración de la aplicación.
-    - sql: Carpeta que contiene los scripts de creación de la base de datos y de inserción de datos de prueba.
-    - log: Carpeta que contiene los archivos de log generados por la aplicación.
-    - docker: [Opcional] Carpeta que contiene los archivos necesarios para la creación de un contenedor docker con la base de datos.
-    - .gitignore: contiene los archivos y carpetas que no se deben subir al repositorio.
-    - pom.xml: archivo de configuración de maven.
-    - README.md: archivo de descripción del proyecto.
-    - docker.md: archivo de descripción de la creación de un contenedor docker con la base de datos.
 
+    - src/main/java: Carpeta que contiene el código fuente del proyecto.
+
+    - src/main/resources: Carpeta que contiene los archivos de configuración de casos de test y logger.
+
+    - src/test/java: Carpeta que contiene los casos de test.
+
+    - target: Carpeta que contiene los archivos generados por maven.
+
+    - cfg: Carpeta que contiene los archivos de configuración de la aplicación.
+
+    - sql: Carpeta que contiene los scripts de creación de la base de datos y de inserción de datos de prueba.
+
+    - log: Carpeta que contiene los archivos de log generados por la aplicación.
+
+    - docker: [Opcional] Carpeta que contiene los archivos necesarios para la creación de un contenedor docker con la base de datos.
+
+    - .gitignore: contiene los archivos y carpetas que no se deben subir al repositorio.
+
+    - pom.xml: archivo de configuración de maven.
+
+    - README.md: archivo de descripción del proyecto.
+
+    - docker.md: archivo de descripción de la creación de un contenedor docker con la base de datos.
+    
 ## Requisitos del sistema
 
 ### 1. Java JDK instalado y configurado (JAVA_HOME y PATH)
