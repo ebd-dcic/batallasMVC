@@ -1,1 +1,1 @@
-drop database batallas;
+drop database if exists batallas;
