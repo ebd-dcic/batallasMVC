@@ -1,9 +1,22 @@
-# banco
- Proyecto de banco con MVC
+# Ejemplo BATALLAS
 
-## Observación respecto a la aplicación
+Ejemplo de un proyecto CRUD sobre batallas en Guerras Mundiales. Este ejemplo muestra como se puede implementar un CRUD con una base de datos MySQL o MariaDB. Se utiliza el patrón DAO para la persistencia de los datos y el patrón MVC para la comunicación entre la vista y el modelo. Secundariamente se muestra el uso de archivos de configuración para las propiedades del sistema y para la conexión a la base de datos, el uso de maven para la gestión de dependencias y la generación de un archivo JAR con todas las dependencias incluidas, el uso de logger para la generación de logs y el uso de casos de test unitarios y de integración para la validación del código.
 
-En la aplicación inicial hay opciones para realizar Transferencias y Extracciones, sin embargo, dichas opciones serán implementadas en el proyecto 4 y no están presentes en el enunciado del proyecto 3.
+## Estructura del proyecto
+
+El proyecto está estructurado de la siguiente manera:
+    - src/main/java: Carpeta que contiene el código fuente del proyecto.
+    - src/main/resources: Carpeta que contiene los archivos de configuración de casos de test y logger.
+    - src/test/java: Carpeta que contiene los casos de test.
+    - target: Carpeta que contiene los archivos generados por maven.
+    - cfg: Carpeta que contiene los archivos de configuración de la aplicación.
+    - sql: Carpeta que contiene los scripts de creación de la base de datos y de inserción de datos de prueba.
+    - log: Carpeta que contiene los archivos de log generados por la aplicación.
+    - docker: [Opcional] Carpeta que contiene los archivos necesarios para la creación de un contenedor docker con la base de datos.
+    - .gitignore: contiene los archivos y carpetas que no se deben subir al repositorio.
+    - pom.xml: archivo de configuración de maven.
+    - README.md: archivo de descripción del proyecto.
+    - docker.md: archivo de descripción de la creación de un contenedor docker con la base de datos.
 
 ## Requisitos del sistema
 
