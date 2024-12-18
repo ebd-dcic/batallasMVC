@@ -15,10 +15,17 @@ jobs:
         with:
           java-version: '8'
           distribution: 'temurin'
-      - name: Build with Maven
-        run: mvn clean package
+      - name: Cache Maven dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
       - name: Create database
         run: docker run -d --name my-db -e MYSQL_ROOT_PASSWORD=1234 mysql:latest
+      - name: Build with Maven
+        run: mvn clean package
       - name: Run tests
         run: mvn test
       - name: Stop database
