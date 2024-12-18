@@ -24,6 +24,13 @@ jobs:
             ${{ runner.os }}-maven-
       - name: Create database
         run: docker run -d --name my-db -e MYSQL_ROOT_PASSWORD=1234 mysql:latest
+      - name: Wait for MySQL to be ready
+        run: |
+          echo "Waiting for MySQL to be ready..."
+          until docker exec my-db mysqladmin ping --silent; do
+            echo "Waiting for the database connection..."
+            sleep 5
+          done
       - name: Set environment variable
         run: echo "DOCKER_DB_NAME=my-db" >> $GITHUB_ENV
       - name: Build with Maven
