@@ -23,7 +23,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
       - name: Create database
-        run: docker run -d --name my-db -e MYSQL_ROOT_PASSWORD=1234 mysql:latest
+        run: docker run -d --name my-db -h my-db -e MYSQL_ROOT_PASSWORD=1234 mysql:latest
       - name: Wait for MySQL to be ready
         run: |
           echo "Waiting for MySQL to be ready..."
