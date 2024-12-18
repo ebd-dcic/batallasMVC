@@ -31,6 +31,8 @@ jobs:
             echo "Waiting for the database connection..."
             sleep 5
           done
+      - name: Test MySQL connection
+        run: docker exec my-db mysql -uroot -p1234 -e "SHOW DATABASES;"
       - name: Set environment variable
         run: echo "DOCKER_DB_NAME=my-db" >> $GITHUB_ENV
       - name: Build with Maven
