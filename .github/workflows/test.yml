@@ -22,6 +22,8 @@ jobs:
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
             ${{ runner.os }}-maven-
+      - name: Show status Ubuntu MySQL (SUDO)
+        run: sudo service mysql status
       - name: Create Docker network
         run: docker network create my-network
       - name: Check if my.conf exists
