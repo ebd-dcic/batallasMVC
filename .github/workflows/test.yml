@@ -40,6 +40,15 @@ jobs:
             echo "Waiting for the database connection..."
             sleep 5
           done
+      - name: Get the mysql host
+        id: get_host
+        run: |
+            host=`docker network inspect -f '{{(index .IPAM.Config 0).Gateway}}' bridge`
+            echo "db-host=$host" >> $GITHUB_OUTPUT
+      - name: Init Database
+        run: |
+            host=`docker network inspect -f '{{(index .IPAM.Config 0).Gateway}}' bridge`
+            docker exec mysql -uroot --password=1234 -h ${{ steps.get_host.outputs.db-host }} -e "SET GLOBAL sql_mode = ''"
       - name: Verify MySQL configuration with mysqladmin
         run: docker exec my-db mysqladmin -uroot -p1234 status
       - name: Test MySQL connection using MySQL client
