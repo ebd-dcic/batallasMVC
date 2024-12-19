@@ -33,7 +33,6 @@ jobs:
             -e MYSQL_ALLOW_EMPTY_PASSWORD=yes \
             -v ${{ github.workspace }}/docker/config/my.conf:/etc/mysql/conf.d/config-file.cnf \
             mysql:latest
-          docker exec my-db mysql -u root -p1234 -e "CREATE USER 'myuser'@'%' IDENTIFIED BY 'mypassword'; GRANT ALL PRIVILEGES ON *.* TO 'myuser'@'%'; FLUSH PRIVILEGES;"
       - name: Wait for MySQL to be ready
         run: |
           echo "Waiting for MySQL to be ready..."
@@ -41,8 +40,12 @@ jobs:
             echo "Waiting for the database connection..."
             sleep 5
           done
+      - name: Verify MySQL configuration with mysqladmin
+        run: docker exec my-db mysqladmin -uroot -p1234 status
       - name: Test MySQL connection using MySQL client
-        run: docker exec my-db mysql --user=root --password=1234 --execute="SHOW DATABASES;"
+        run: |
+          docker exec my-db mysql -u root -p1234 -e "CREATE USER 'myuser'@'%' IDENTIFIED BY 'mypassword'; GRANT ALL PRIVILEGES ON *.* TO 'myuser'@'%'; FLUSH PRIVILEGES;"
+          docker exec my-db mysql --user=root --password=1234 --execute="SHOW DATABASES;"
       - name: Set environment variable
         run: echo "DOCKER_DB_NAME=my-db" >> $GITHUB_ENV
       - name: Build with Maven
