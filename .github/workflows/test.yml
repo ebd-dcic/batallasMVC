@@ -25,7 +25,10 @@ jobs:
       - name: Create Docker network
         run: docker network create my-network
       - name: Create database
-        run: docker run -d --name my-db --network my-network --hostname my-db -e MYSQL_ROOT_PASSWORD=1234 -e MYSQL_ALLOW_EMPTY_PASSWORD=yes mysql:latest
+        run: docker run -d --name my-db --network my-network --hostname my-db \
+              -e MYSQL_ROOT_PASSWORD=1234 -e MYSQL_ALLOW_EMPTY_PASSWORD=yes \
+              -v $(pwd)/config/my.conf:/etc/mysql/conf.d/config-file.cnf \
+              mysql:latest
       - name: Wait for MySQL to be ready
         run: |
           echo "Waiting for MySQL to be ready..."
