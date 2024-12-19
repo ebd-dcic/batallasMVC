@@ -24,6 +24,12 @@ jobs:
             ${{ runner.os }}-maven-
       - name: Create Docker network
         run: docker network create my-network
+      - name: Check current directory and a tag with github.workspace
+        run: echo $PWD && echo " [github.workspace] " && echo ${{ github.workspace }}
+      - name: Check if my.conf exists
+        run: ls -l docker/config/my.conf
+      - name: Show files in current directory recursively
+        run: ls -lR
       - name: Create database
         run: docker run -d --name my-db --network my-network --hostname my-db -e MYSQL_ROOT_PASSWORD=1234 -e MYSQL_ALLOW_EMPTY_PASSWORD=yes -v ${{ github.workspace }}/docker/config/my.conf:/etc/mysql/conf.d/config-file.cnf mysql:latest
       - name: Wait for MySQL to be ready
