@@ -27,7 +27,7 @@ jobs:
       - name: Create database
         run: docker run -d --name my-db --network my-network --hostname my-db \
               -e MYSQL_ROOT_PASSWORD=1234 -e MYSQL_ALLOW_EMPTY_PASSWORD=yes \
-              -v $(pwd)/docker/config/my.conf:/etc/mysql/conf.d/config-file.cnf \
+              -v ${{ github.workspace }}/docker/config/my.conf:/etc/mysql/conf.d/config-file.cnf \
               mysql:latest
       - name: Wait for MySQL to be ready
         run: |
@@ -36,8 +36,8 @@ jobs:
             echo "Waiting for the database connection..."
             sleep 5
           done
-      - name: Test MySQL connection
-        run: docker exec my-db mysql -uroot -p1234 -e "SHOW DATABASES;"
+      - name: Test MySQL connection using MySQL client
+        run: docker exec my-db mysql --user=root --password=1234 --execute="SHOW DATABASES;"
       - name: Set environment variable
         run: echo "DOCKER_DB_NAME=my-db" >> $GITHUB_ENV
       - name: Build with Maven
