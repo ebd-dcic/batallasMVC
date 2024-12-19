@@ -58,4 +58,7 @@ jobs:
         run: docker network rm my-network
       - name: Show MySQL error log
         if: failure()
-        run: docker exec my-db cat /var/log/mysql/error.log
+        run: | 
+          docker exec my-db cat /var/log/mysql/error.log
+          docker exec my-db netstat -tulnp | grep :3306
+          docker exec my-db ls -lR /var/log
