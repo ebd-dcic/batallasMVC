@@ -54,3 +54,8 @@ jobs:
         run: mvn test
       - name: Stop database
         run: docker stop my-db && docker rm my-db
+      - name: Remove Docker network
+        run: docker network rm my-network
+      - name: Show MySQL error log
+        if: failure()
+        run: docker exec my-db cat /var/log/mysql/error.log
