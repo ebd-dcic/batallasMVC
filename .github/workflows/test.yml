@@ -33,7 +33,7 @@ jobs:
             -e MYSQL_ALLOW_EMPTY_PASSWORD=yes \
             -v ${{ github.workspace }}/docker/config/my.conf:/etc/mysql/conf.d/config-file.cnf \
             mysql:latest
-          docker exec -it my-db mysql -u root -p1234 -e "CREATE USER 'myuser'@'%' IDENTIFIED BY 'mypassword'; GRANT ALL PRIVILEGES ON *.* TO 'myuser'@'%'; FLUSH PRIVILEGES;"
+          docker exec my-db mysql -u root -p1234 -e "CREATE USER 'myuser'@'%' IDENTIFIED BY 'mypassword'; GRANT ALL PRIVILEGES ON *.* TO 'myuser'@'%'; FLUSH PRIVILEGES;"
       - name: Wait for MySQL to be ready
         run: |
           echo "Waiting for MySQL to be ready..."
