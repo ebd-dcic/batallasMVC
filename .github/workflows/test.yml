@@ -46,7 +46,7 @@ jobs:
           done
       - name: Verify MySQL configuration with mysqladmin
         run: docker exec my-db mysqladmin --host=mysql -uroot -p1234 status
-      - name: Test MySQL connection using MySQL client
+      - name: Test MySQL connection using MySQL cliente
         run: |
           docker exec my-db mysql --host=mysql --user=root --password=1234 --execute="SHOW DATABASES;"
       - name: Set environment variable
