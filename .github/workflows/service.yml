@@ -30,5 +30,13 @@ jobs:
           mysql database: 'batallas'
           mysql user: 'admin_batallas'
           mysql password: 'pwadmin'
+      - name: Wait for MySQL to be ready
+        run: |
+            echo "Waiting for MySQL to be ready..."
+            until docker exec my-db mysqladmin ping --silent; do
+              echo "Waiting for the database connection..."
+              sleep 5
+            done
+            echo "MySQL is ready!"
       - name: Verify MySQL installation
         run: mysql -uroot -p1234 -e "SHOW DATABASES;"
