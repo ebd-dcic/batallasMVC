@@ -44,6 +44,13 @@ jobs:
             echo "Waiting for the database connection..."
             sleep 5
           done
+      - name: Get MySQL hostname
+        run: |
+            MYSQL_HOST=$(docker-compose ps -q db)
+            echo "MYSQL_HOST=$MYSQL_HOST" >> $GITHUB_ENV
+      - name: Test MySQL connection using MySQL client
+        run: |
+            docker exec my-app mysqladmin --host=${{ env.MYSQL_HOST }} --user=root --password=1234 status
       - name: Verify MySQL configuration with mysqladmin
         run: docker exec my-db mysqladmin --host=my-db -uroot -p1234 status
       - name: Test MySQL connection using MySQL client
