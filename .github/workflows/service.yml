@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up JDK 8
+        uses: actions/setup-java@v3
+        with:
+          java-version: '8'
+          distribution: 'temurin'
+      - name: Cache Maven dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+      - name: Set up MySQL
+        uses: mysql-actions/setup-mysql@v1
+        with:
+          version: '8' # Use the desired MySQL version
+          root_password: '1234' 
+          allow_empty_password: 'true' 
+      - name: Verify MySQL installation
+        run: mysql -uroot -p1234 -e "SHOW DATABASES;"
