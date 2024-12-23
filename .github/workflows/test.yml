@@ -46,6 +46,8 @@ jobs:
           done
       - name: Get MySQL hostname
         run: |
+            echo "MYSQL_HOST=$(docker-compose ps -q db)"
+            echo "MYSQL_HOST=$(docker-compose ps)"
             MYSQL_HOST=$(docker-compose ps -q db)
             echo "MYSQL_HOST=$MYSQL_HOST" >> $GITHUB_ENV
       - name: Test MySQL connection using MySQL client
