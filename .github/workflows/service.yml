@@ -25,11 +25,10 @@ jobs:
       - name: Set up MySQL
         uses: mirromutth/mysql-action@v1.1
         with:
-          version: '8.0' # Use the desired MySQL version
-          root_password: '1234' 
-          allow_empty_password: 'true' 
-          mysql_database: 'batallas'
-          mysql_user: 'admin_batallas'
-          mysql_password: 'pwadmin'
+          mysql version: '8.0' # Use the desired MySQL version
+          mysql root password: '1234' 
+          mysql database: 'batallas'
+          mysql user: 'admin_batallas'
+          mysql password: 'pwadmin'
       - name: Verify MySQL installation
         run: mysql -uroot -p1234 -e "SHOW DATABASES;"
