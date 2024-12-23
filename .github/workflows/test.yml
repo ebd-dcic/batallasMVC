@@ -33,6 +33,10 @@ jobs:
             -e MYSQL_ALLOW_EMPTY_PASSWORD=yes \
             -v ${{ github.workspace }}/docker/config/my.conf:/etc/mysql/conf.d/my.cnf \
             mysql:latest
+      - name: Show Docker network
+        run: docker network inspect my-network
+      - name: Inspect MySQL container
+        run: docker inspect my-db
       - name: Wait for MySQL to be ready
         run: |
           echo "Waiting for MySQL to be ready..."
