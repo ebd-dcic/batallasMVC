@@ -27,8 +27,8 @@ jobs:
         with:
             mysql-version: "8.0"
             root-password: "1234"
-            database: "batallas"
-        run: mysql -uroot -e 'SELECT version()'
+      - name: Test MySQL connection
+        run: mysql -uroot -p1234 -e 'SELECT version()'
       - name: Wait for MySQL to be ready
         run: |
             echo "Waiting for MySQL to be ready...."
