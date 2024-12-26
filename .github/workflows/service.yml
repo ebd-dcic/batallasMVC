@@ -39,3 +39,7 @@ jobs:
             echo "MySQL is ready!"
       - name: Verify MySQL installation
         run: mysql -uroot -p1234 -e "SHOW DATABASES;"
+      - name: Build with Maven
+        run: mvn clean package -DskipTests=true
+      - name: Run tests
+        run: mvn test
