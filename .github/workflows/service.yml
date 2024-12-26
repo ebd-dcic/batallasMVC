@@ -23,13 +23,12 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
       - name: Set up MySQL
-        uses: mirromutth/mysql-action@v1.1
+        uses: shogo82148/actions-setup-mysql@v1
         with:
-          mysql version: '8.0' # Use the desired MySQL version
-          mysql root password: '1234' 
-          mysql database: 'batallas'
-          mysql user: 'admin_batallas'
-          mysql password: 'pwadmin'
+            mysql-version: "8.0"
+            root-password: "1234"
+            database: "batallas"
+        run: mysql -uroot -e 'SELECT version()'
       - name: Wait for MySQL to be ready
         run: |
             echo "Waiting for MySQL to be ready...."
