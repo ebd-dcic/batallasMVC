@@ -105,3 +105,7 @@ mvn test -Pintegration-tests
 
 # IMPORTANTE
 Para que la aplicación se ejecute correctamente es necesario que la carpeta *'cfg'* (que contiene los archivos de configuracion) se encuentre en la misma carpeta que el archivo JAR.
+
+# Github Actions
+
+Se ha configurado un flujo de trabajo en Github Actions que se ejecuta cada vez que se realiza un push a la rama main. Este flujo de trabajo ejecuta los casos de test unitarios y de integración. Para el caso de los test de integración se utiliza una base de datos MySQL basado en un action de Marketplace de Github shogo82148/actions-setup-mysql@v1 que permite levantar una base de datos MySQL en un contenedor docker. Para este action el password de la BD se pasa de plano sin utilizar secrets (no es recomendable hacerlo en un proyecto real).
