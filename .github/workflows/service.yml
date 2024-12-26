@@ -32,7 +32,7 @@ jobs:
           mysql password: 'pwadmin'
       - name: Wait for MySQL to be ready
         run: |
-            echo "Waiting for MySQL to be ready..."
+            echo "Waiting for MySQL to be ready...."
             until mysqladmin ping --silent; do
               echo "Waiting for the database connection..."
               sleep 5
